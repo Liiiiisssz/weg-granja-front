@@ -105,17 +105,9 @@ WEG-Granja-Front/
 
 ---
 
-## 👤 Autor
+## 👤 Autoras
 
-**Viviihyy**
-
-- GitHub: [@viviihyy](https://github.com/viviihyy)
-
-
-<div align="center">
-
-**[⬆ Voltar ao topo](#weg-granja-frontend-)**
-
-Feito com ❤️ por Viviihyy
-
-</div>
+**Elis Jasper**
+**Gabrielli Glowatski**
+**Maria Eduarda Zabel**
+**Melissa Rafaela Pereira**
