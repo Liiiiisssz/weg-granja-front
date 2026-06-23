@@ -1,103 +1,128 @@
 "use client";
 import { useState, useEffect } from "react";
 
-const API_URL = "http://localhost:8080";
+const API_URL = "https://weg-granja-api.onrender.com";
 
 const today = () => new Date().toISOString().slice(0, 10);
 
 const s = {
   page: {
-    background: "#1a1a1a",
+    background: "#F3F4F6",
     minHeight: "100vh",
-    color: "#fff",
-    fontFamily: "monospace",
-  },
-  container: {
-    maxWidth: "1000px",
-    margin: "0 auto",
+    color: "#1F2937",
+    fontFamily: "system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif",
     padding: "40px 24px",
   },
-  title: {
-    fontSize: "2rem",
-    fontWeight: "bold",
-    color: "#0057B8",
-    marginBottom: "8px",
-    letterSpacing: "2px",
+  container: {
+    maxWidth: "1100px",
+    margin: "0 auto",
   },
-  section: {
-    marginTop: "40px",
+  header: {
+    marginBottom: "32px",
+  },
+  title: {
+    fontSize: "2.25rem",
+    fontWeight: "800",
+    color: "#0057B8",
+    margin: "0 0 4px 0",
+    letterSpacing: "-0.5px",
+  },
+  desc: {
+    color: "#6B7280",
+    fontSize: "1rem",
+    margin: 0,
+  },
+  card: {
+    background: "#FFFFFF",
+    borderRadius: "12px",
+    padding: "32px",
+    boxShadow: "0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06)",
+    marginBottom: "32px",
   },
   subtitle: {
-    fontSize: "1.1rem",
-    fontWeight: "bold",
-    borderBottom: "1px solid #444",
-    paddingBottom: "8px",
-    marginBottom: "16px",
-    color: "#fff",
+    fontSize: "1.25rem",
+    fontWeight: "600",
+    color: "#111827",
+    margin: "0 0 24px 0",
+    paddingBottom: "12px",
+    borderBottom: "1px solid #E5E7EB",
   },
   form: {
-    display: "flex",
-    flexDirection: "column",
-    gap: "12px",
-    maxWidth: "480px",
+    display: "grid",
+    gridTemplateColumns: "repeat(auto-fit, minmax(220px, 1fr))",
+    gap: "24px",
+    alignItems: "end",
   },
   label: {
     display: "flex",
     flexDirection: "column",
-    gap: "4px",
-    fontSize: "13px",
-    color: "#aaa",
+    gap: "8px",
+    fontSize: "0.875rem",
+    fontWeight: "600",
+    color: "#4B5563",
   },
   input: {
-    background: "#111",
-    border: "1px solid #333",
-    color: "#fff",
-    padding: "10px 12px",
-    borderRadius: "6px",
+    background: "#FFFFFF",
+    border: "1px solid #D1D5DB",
+    color: "#111827",
+    padding: "12px 16px",
+    borderRadius: "8px",
     width: "100%",
-    fontFamily: "monospace",
-    fontSize: "14px",
+    fontSize: "1rem",
+    outline: "none",
     boxSizing: "border-box",
-    colorScheme: "dark",
   },
   submitBtn: {
     background: "#0057B8",
-    color: "#fff",
+    color: "#FFFFFF",
     padding: "12px 24px",
-    borderRadius: "6px",
-    fontWeight: "bold",
+    borderRadius: "8px",
+    fontWeight: "600",
     cursor: "pointer",
     border: "none",
-    fontFamily: "monospace",
-    fontSize: "14px",
-    alignSelf: "flex-start",
+    fontSize: "1rem",
+    width: "100%",
+    boxShadow: "0 2px 4px rgba(0, 87, 184, 0.3)",
   },
-  ok: { color: "#00cc44", fontSize: "13px" },
-  err: { color: "#cc3333", fontSize: "13px" },
-  table: { width: "100%", borderCollapse: "collapse" },
-  th: {
-    background: "#2a2a2a",
-    padding: "10px",
+  msgContainer: {
+    gridColumn: "1 / -1",
+    marginTop: "-8px",
+  },
+  ok: { color: "#059669", fontSize: "0.875rem", fontWeight: "500", display: "flex", alignItems: "center", gap: "6px" },
+  err: { color: "#DC2626", fontSize: "0.875rem", fontWeight: "500", display: "flex", alignItems: "center", gap: "6px" },
+  tableWrapper: {
+    overflowX: "auto",
+  },
+  table: { 
+    width: "100%", 
+    borderCollapse: "collapse",
     textAlign: "left",
-    fontSize: "13px",
-    color: "#aaa",
-    borderBottom: "1px solid #333",
+  },
+  th: {
+    background: "#F9FAFB",
+    padding: "16px",
+    fontSize: "0.75rem",
+    fontWeight: "600",
+    textTransform: "uppercase",
+    letterSpacing: "0.05em",
+    color: "#6B7280",
+    borderBottom: "1px solid #E5E7EB",
   },
   td: {
-    padding: "10px",
-    fontSize: "13px",
-    borderBottom: "1px solid #222",
+    padding: "16px",
+    fontSize: "0.875rem",
+    color: "#111827",
+    borderBottom: "1px solid #E5E7EB",
   },
   redBtn: {
-    background: "#cc0000",
-    color: "#fff",
-    padding: "6px 14px",
-    borderRadius: "4px",
-    fontSize: "12px",
+    background: "#FEE2E2",
+    color: "#991B1B",
+    padding: "8px 16px",
+    borderRadius: "6px",
+    fontSize: "0.75rem",
     cursor: "pointer",
     border: "none",
-    fontWeight: "bold",
-    fontFamily: "monospace",
+    fontWeight: "700",
   },
 };
 
@@ -184,11 +209,14 @@ export default function NutricionistaPage() {
   return (
     <div style={s.page}>
       <div style={s.container}>
-        <h1 style={s.title}>Nutricionista</h1>
-        <p style={{ color: "#666", fontSize: "13px", margin: 0 }}>Gestão de limites de proteína</p>
+        
+        <div style={s.header}>
+          <h1 style={s.title}>Nutricionista</h1>
+          <p style={s.desc}>Gestão de limites de proteína e monitoramento de refeições</p>
+        </div>
 
-        {/* ── Form ── */}
-        <div style={s.section}>
+        {/* ── Form Card ── */}
+        <div style={s.card}>
           <h2 style={s.subtitle}>Configurar limite do dia</h2>
           <form style={s.form} onSubmit={handleSave}>
             <label style={s.label}>
@@ -226,89 +254,100 @@ export default function NutricionistaPage() {
               />
             </label>
 
-            <button type="submit" disabled={saving} style={s.submitBtn}>
-              {saving ? "SALVANDO..." : "SALVAR"}
-            </button>
+            <div>
+              <button type="submit" disabled={saving} style={{...s.submitBtn, opacity: saving ? 0.7 : 1}}>
+                {saving ? "SALVANDO..." : "SALVAR CONFIGURAÇÃO"}
+              </button>
+            </div>
 
             {formMsg && (
-              <span style={formMsg.type === "ok" ? s.ok : s.err}>
-                {formMsg.type === "ok" ? "✓ " : "✗ "}{formMsg.text}
-              </span>
+              <div style={s.msgContainer}>
+                <span style={formMsg.type === "ok" ? s.ok : s.err}>
+                  {formMsg.type === "ok" ? "✅" : "❌"} {formMsg.text}
+                </span>
+              </div>
             )}
           </form>
         </div>
 
-        {/* ── Configs table ── */}
-        <div style={s.section}>
+        {/* ── Configs Table Card ── */}
+        <div style={s.card}>
           <h2 style={s.subtitle}>Configurações cadastradas</h2>
           {configsErr ? (
-            <span style={s.err}>Erro ao carregar: {configsErr}</span>
+            <span style={s.err}>❌ Erro ao carregar: {configsErr}</span>
           ) : configs.length === 0 ? (
-            <span style={{ color: "#555", fontSize: "13px" }}>Nenhuma configuração cadastrada.</span>
+            <span style={{ color: "#6B7280", fontSize: "0.875rem" }}>Nenhuma configuração cadastrada.</span>
           ) : (
-            <table style={s.table}>
-              <thead>
-                <tr>
-                  {["ID", "Data", "Refeição", "Limite", "Ações"].map(h => (
-                    <th key={h} style={s.th}>{h}</th>
-                  ))}
-                </tr>
-              </thead>
-              <tbody>
-                {configs.map(c => (
-                  <tr key={c.id} style={{ cursor: "default" }}
-                    onMouseEnter={e => e.currentTarget.style.background = "#1e1e1e"}
-                    onMouseLeave={e => e.currentTarget.style.background = ""}
-                  >
-                    <td style={s.td}>{c.id}</td>
-                    <td style={s.td}>{c.data}</td>
-                    <td style={s.td}>{c.tipoRefeicao}</td>
-                    <td style={s.td}>{c.limitePorcoes}</td>
-                    <td style={s.td}>
-                      <button style={s.redBtn} onClick={() => handleDelete(c.id)}>
-                        Excluir
-                      </button>
-                    </td>
+            <div style={s.tableWrapper}>
+              <table style={s.table}>
+                <thead>
+                  <tr>
+                    {["ID", "Data", "Refeição", "Limite", "Ações"].map(h => (
+                      <th key={h} style={s.th}>{h}</th>
+                    ))}
                   </tr>
-                ))}
-              </tbody>
-            </table>
+                </thead>
+                <tbody>
+                  {configs.map(c => (
+                    <tr key={c.id}
+                      onMouseEnter={e => e.currentTarget.style.background = "#F9FAFB"}
+                      onMouseLeave={e => e.currentTarget.style.background = "transparent"}
+                      style={{ transition: "background 0.2s" }}
+                    >
+                      <td style={s.td}>{c.id}</td>
+                      <td style={{...s.td, fontWeight: "500"}}>{c.data}</td>
+                      <td style={s.td}>{c.tipoRefeicao}</td>
+                      <td style={s.td}>{c.limitePorcoes}</td>
+                      <td style={s.td}>
+                        <button style={s.redBtn} onClick={() => handleDelete(c.id)}>
+                          Excluir
+                        </button>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
           )}
         </div>
 
-        {/* ── Retiradas table ── */}
-        <div style={s.section}>
+        {/* ── Retiradas Table Card ── */}
+        <div style={s.card}>
           <h2 style={s.subtitle}>Histórico de retiradas de hoje</h2>
           {retiradasErr ? (
-            <span style={s.err}>Erro ao carregar: {retiradasErr}</span>
+            <span style={s.err}>❌ Erro ao carregar: {retiradasErr}</span>
           ) : retiradas.length === 0 ? (
-            <span style={{ color: "#555", fontSize: "13px" }}>Nenhuma retirada registrada hoje.</span>
+            <span style={{ color: "#6B7280", fontSize: "0.875rem" }}>Nenhuma retirada registrada hoje até o momento.</span>
           ) : (
-            <table style={s.table}>
-              <thead>
-                <tr>
-                  {["Nome", "Matrícula", "Turno", "Refeição", "Horário"].map(h => (
-                    <th key={h} style={s.th}>{h}</th>
-                  ))}
-                </tr>
-              </thead>
-              <tbody>
-                {retiradas.map((r, i) => (
-                  <tr key={i}
-                    onMouseEnter={e => e.currentTarget.style.background = "#1e1e1e"}
-                    onMouseLeave={e => e.currentTarget.style.background = ""}
-                  >
-                    <td style={s.td}>{r.colaboradorNome ?? r.nome ?? "—"}</td>
-                    <td style={s.td}>{r.matricula ?? "—"}</td>
-                    <td style={s.td}>{r.turno ?? "—"}</td>
-                    <td style={s.td}>{r.tipoRefeicao ?? r.refeicao ?? "—"}</td>
-                    <td style={s.td}>{formatTime(r.dataHora)}</td>
+            <div style={s.tableWrapper}>
+              <table style={s.table}>
+                <thead>
+                  <tr>
+                    {["Nome", "Matrícula", "Turno", "Refeição", "Horário"].map(h => (
+                      <th key={h} style={s.th}>{h}</th>
+                    ))}
                   </tr>
-                ))}
-              </tbody>
-            </table>
+                </thead>
+                <tbody>
+                  {retiradas.map((r, i) => (
+                    <tr key={i}
+                      onMouseEnter={e => e.currentTarget.style.background = "#F9FAFB"}
+                      onMouseLeave={e => e.currentTarget.style.background = "transparent"}
+                      style={{ transition: "background 0.2s" }}
+                    >
+                      <td style={{...s.td, fontWeight: "500"}}>{r.colaboradorNome ?? r.nome ?? "—"}</td>
+                      <td style={s.td}>{r.matricula ?? "—"}</td>
+                      <td style={s.td}>{r.turno ?? "—"}</td>
+                      <td style={s.td}>{r.tipoRefeicao ?? r.refeicao ?? "—"}</td>
+                      <td style={{...s.td, color: "#0057B8", fontWeight: "600"}}>{formatTime(r.dataHora)}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
           )}
         </div>
+
       </div>
     </div>
   );
