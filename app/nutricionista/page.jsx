@@ -1,7 +1,7 @@
 "use client";
 import { useState, useEffect } from "react";
-
-const API_URL = "https://weg-granja-api.onrender.com";
+import { apiFetch, API_URL } from "../../lib/auth";
+import RotaProtegida from "../../components/RotaProtegida";
 
 const today = () => new Date().toISOString().slice(0, 10);
 
@@ -126,7 +126,7 @@ const s = {
   },
 };
 
-export default function NutricionistaPage() {
+function NutricionistaConteudo() {
   const [date, setDate] = useState(today());
   const [tipoRefeicao, setTipoRefeicao] = useState("ALMOCO");
   const [limitePorcoes, setLimitePorcoes] = useState(1);
@@ -141,7 +141,7 @@ export default function NutricionistaPage() {
 
   const loadConfigs = async () => {
     try {
-      const res = await fetch(`${API_URL}/configuracoes-diarias`);
+      const res = await apiFetch(`/configuracoes-diarias`);
       if (!res.ok) throw new Error(`HTTP ${res.status}`);
       setConfigs(await res.json());
       setConfigsErr(null);
@@ -152,7 +152,7 @@ export default function NutricionistaPage() {
 
   const loadRetiradas = async () => {
     try {
-      const res = await fetch(`${API_URL}/retiradas`);
+      const res = await apiFetch(`/retiradas`);
       if (!res.ok) throw new Error(`HTTP ${res.status}`);
       setRetiradas(await res.json());
       setRetiradasErr(null);
@@ -171,7 +171,7 @@ export default function NutricionistaPage() {
     setSaving(true);
     setFormMsg(null);
     try {
-      const res = await fetch(`${API_URL}/configuracoes-diarias`, {
+      const res = await apiFetch(`/configuracoes-diarias`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ data: date, tipoRefeicao, limitePorcoes: Number(limitePorcoes) }),
@@ -189,7 +189,7 @@ export default function NutricionistaPage() {
 
   const handleDelete = async (id) => {
     try {
-      const res = await fetch(`${API_URL}/configuracoes-diarias/${id}`, { method: "DELETE" });
+      const res = await apiFetch(`/configuracoes-diarias/${id}`, { method: "DELETE" });
       if (!res.ok) throw new Error(`HTTP ${res.status}`);
       loadConfigs();
     } catch (e) {
@@ -350,5 +350,13 @@ export default function NutricionistaPage() {
 
       </div>
     </div>
+  );
+}
+
+export default function NutricionistaPage() {
+  return (
+    <RotaProtegida papelNecessario="NUTRICIONISTA">
+      <NutricionistaConteudo />
+    </RotaProtegida>
   );
 }
